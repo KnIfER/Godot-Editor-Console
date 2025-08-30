@@ -1,0 +1,122 @@
+[gd_scene load_steps=5 format=3 uid="uid://cak3xav8h7p5x"]
+
+[ext_resource type="Script" path="res://addons/console_input/console_input.gd" id="1_0j8x5"]
+[ext_resource type="Script" path="res://addons/console_input/Runner.gd" id="2_ht6gp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k507j"]
+bg_color = Color(0.184314, 0.184314, 0.184314, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v761p"]
+bg_color = Color(0.294118, 0.564706, 0.980392, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="ConsoleInput" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1152.0
+offset_bottom = -648.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0j8x5")
+
+[node name="Container" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="OutputArea" type="TextEdit" parent="Container"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_k507j")
+text = "Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+Console Input ready. Type 'help' for commands.
+"
+
+[node name="InputContainer" type="HBoxContainer" parent="Container"]
+layout_mode = 2
+
+[node name="InputField" type="TextEdit" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 0
+offset_left = 10.0
+offset_top = 16.0
+offset_right = 349.0
+offset_bottom = 185.0
+text = "print(123)"
+
+[node name="RunButton" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 27.0
+offset_top = 152.0
+offset_right = 104.0
+offset_bottom = 175.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_v761p")
+text = "Run"
+
+[node name="EditButton" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 136.0
+offset_top = 152.0
+offset_right = 213.0
+offset_bottom = 175.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_v761p")
+text = "Edit
+"
+
+[node name="Runner" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_ht6gp")
+
+[node name="TEST" type="Node" parent="."]
