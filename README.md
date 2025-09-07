@@ -4,6 +4,7 @@
 1. include FPS monitor
 1. learning from Debug Menu, make DDD auto reload by itself
 1. new configurable short-cut F12 to run code in clipboard
+2. new method `sn()` to get selected node 
 1. "edit" button will open a temp script
 
 
@@ -68,7 +69,7 @@ DDD.set_text(....)
 
 <img width="345" height="253" alt="image" src="https://github.com/user-attachments/assets/1d16141a-7c96-4d64-b1d7-79b89ba19381" />
 
-- new method DDD.vvv top place an Arrow
+- new method DDD.vvv to place an Arrow
 
 
 
