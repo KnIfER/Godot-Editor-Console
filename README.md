@@ -9,7 +9,7 @@
 
 
 - Todo
-- [ ] a pie menu to run tool scripts
+- [ ] a pie menu to run tool scripts (will steal from terrabrush :)
 
 
 
