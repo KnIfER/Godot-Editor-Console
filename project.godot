@@ -17,7 +17,8 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-DDD="*res://addons/console_input/debug_draw.gd"
+DDD="*res://addons/console_input/debug_draw.tscn"
+FPS="*res://addons/console_input/debug_menu.tscn"
 
 [debug]
 

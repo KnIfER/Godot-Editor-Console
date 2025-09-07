@@ -26,20 +26,3 @@ transform = Transform3D(-0.388356, 0.54032, -0.746481, 0, 0.810063, 0.586342, 0.
 current = true
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
-
-[node name="@@30700" type="Node3D" parent="."]
-transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 10, 10)
-
-[node name="@@30699" type="Node3D" parent="@@30700"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-
-[node name="@@30697" type="CSGCylinder3D" parent="@@30700/@@30699"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-radius = 0.05
-height = 1.0
-
-[node name="@@30698" type="CSGCylinder3D" parent="@@30700/@@30699"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
-radius = 0.1
-height = 0.3
-cone = true

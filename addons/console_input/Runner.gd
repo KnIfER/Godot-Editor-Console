@@ -16,7 +16,15 @@ func eval(e:EditorInterface, x:EditorPlugin):
 	
 	Time.get_ticks_msec()
 	
+	#DDD.set_scene(sn())
+	#DDD.get_scene()
 	
+	# pp 123
+
+	
+	
+	
+	DDD.vvv(Vector3(0, 0, 0), Vector3(0, 1, 0), 1)
 	
 	
 	
