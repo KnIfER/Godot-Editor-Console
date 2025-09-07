@@ -20,6 +20,8 @@ const TEXT_BG_COLOR = Color(0.3, 0.3, 0.3, 0.8)
 ## @brief font size used for debug text
 const TEXT_SIZE = 12
 
+var tag0
+var tag1
 # 2D
 
 var _canvas_item : CanvasItem = null
@@ -327,3 +329,130 @@ static func _create_wirecube_mesh(color := Color.WHITE) -> ArrayMesh:
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_LINES, arrays)
 	return mesh
 
+
+
+func get_root():
+	return get_node("/root")
+	
+func print_nodes(node: Node = null, indent: int = 0):
+	if node==null and indent==0:
+		node = get_root()
+	var spaces = ""
+	for i in range(indent):
+		spaces += "=="
+	if spaces:
+		spaces += ">"
+	print(spaces + node.get_class() + ": " + node.name)
+	
+	for child in node.get_children():
+		print_nodes(child, indent + 1)
+
+static func _get_scene(n):
+	var ret = null
+	if n.get_child_count()>0:
+		for cn in n.get_children():
+			if cn is Node3D:
+				ret = cn
+				break
+			else :
+				ret = _get_scene(cn)
+				if ret:
+					break
+	return ret
+
+var scene
+var scene_absolute
+func set_scene(s, ab = false):
+	scene = s
+	scene_absolute = ab
+func get_scene():
+	if scene and is_instance_valid(scene):
+		return scene
+	scene = _get_scene(get_node("/root"))
+	scene_absolute = false
+	return scene
+
+func gn(e:String,n:Node=null):
+	if n==null:
+		n = get_root()
+	return FU.gn(e, n);	
+	
+func gc(e:String,n:Node=null):
+	if n==null:
+		n = get_root()
+	return FU.gc(e, n);	
+
+var arrow_body:StandardMaterial3D=null
+var arrow_head :StandardMaterial3D=null
+
+func ensure_arrow_materials():
+	if not arrow_body:
+		arrow_body = StandardMaterial3D.new()
+		arrow_head = StandardMaterial3D.new()
+		arrow_body.albedo_color = Color.BLUE
+		arrow_body.metallic = 0.2
+		arrow_body.roughness = 0.8
+		arrow_head.albedo_color = Color.RED
+	
+	
+func arrow_body_color(c, arrow=0):
+	if arrow:
+		var material = StandardMaterial3D.new()
+		material.albedo_color = c
+		material.metallic = 0.2
+		material.roughness = 0.8
+		gn("body", arrow).material = material
+	else:
+		ensure_arrow_materials()
+		arrow_body.albedo_color = c
+	
+func arrow_head_color(c, arrow=0):
+	if arrow:
+		var material = StandardMaterial3D.new()
+		material.albedo_color = c
+		gn("head", arrow).material = material
+	else:
+		ensure_arrow_materials()
+		arrow_head.albedo_color = c
+	
+func vvv(pos, direction=0, scale=1):
+	ensure_arrow_materials()
+	var body = CSGCylinder3D.new()
+	body.radius = 0.05
+	body.height = 1.0
+	body.position = Vector3(0, 0.5, 0)  # 将头部放置在主体的一端
+	# head
+	var head = CSGCylinder3D.new()
+	head.height = 0.3
+	head.radius = 0.1
+	head.cone = true
+	head.position = Vector3(0, 0.65+0.5, 0)  # 将头部放置在主体的一端
+	var arrow = Node3D.new()
+	arrow.add_child(body)
+	arrow.add_child(head)
+	
+	arrow.scale = Vector3(scale,scale,scale)
+	
+	var arrowP = Node3D.new()
+	arrowP.add_child(arrow)
+	get_scene().add_child(arrowP)
+	
+	if scene_absolute:
+		arrowP.global_position = pos
+	else:
+		arrowP.position = pos
+	
+	
+	head.owner = get_tree().edited_scene_root
+	body.owner = get_tree().edited_scene_root
+	arrow.owner = get_tree().edited_scene_root
+	arrowP.owner = get_tree().edited_scene_root
+	
+	if direction and direction != Vector3.ZERO:
+		var from: Vector3 = Vector3(0, 1, 0) 
+		arrowP.global_transform.basis = Basis(FU.from_to_rotation(from, direction))
+	body.name = "arrow_body";
+	head.name = "arrow_head";
+	body.material = arrow_body
+	head.material = arrow_head
+	return arrowP

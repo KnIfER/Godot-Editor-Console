@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cak3xav8h7p5x"]
+[gd_scene load_steps=6 format=3 uid="uid://cak3xav8h7p5x"]
 
 [ext_resource type="Script" path="res://addons/console_input/console_input.gd" id="1_0j8x5"]
-[ext_resource type="Script" path="res://addons/console_input/Runner.gd" id="2_ht6gp"]
+[ext_resource type="Script" path="res://addons/console_input/EditButton.gd" id="2_vj2xv"]
+[ext_resource type="Script" path="res://addons/console_input/Runner.gd" id="3_63xjn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k507j"]
 bg_color = Color(0.184314, 0.184314, 0.184314, 1)
@@ -112,11 +113,11 @@ offset_top = 152.0
 offset_right = 213.0
 offset_bottom = 175.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_v761p")
-text = "Edit
-"
+text = "Edit"
+script = ExtResource("2_vj2xv")
 
 [node name="Runner" type="Node" parent="."]
 unique_name_in_owner = true
-script = ExtResource("2_ht6gp")
+script = ExtResource("3_63xjn")
 
 [node name="TEST" type="Node" parent="."]

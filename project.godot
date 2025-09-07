@@ -29,7 +29,7 @@ project/assembly_name="Spaceship"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/console_input/plugin.cfg")
+enabled=PackedStringArray("res://addons/console_input/plugin.cfg", "res://addons/script-ide-43/plugin.cfg")
 
 [input]
 

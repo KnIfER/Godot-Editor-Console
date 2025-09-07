@@ -1,1 +1,4 @@
 .godot
+*.import
+addons/script-ide-43
+*.uid

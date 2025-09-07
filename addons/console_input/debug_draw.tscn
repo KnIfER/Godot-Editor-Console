@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://deois304ccngg"]
+
+[ext_resource type="Script" path="res://addons/console_input/debug_draw.gd" id="1_1isj8"]
+
+[node name="DebugDraw" type="CanvasLayer"]
+script = ExtResource("1_1isj8")

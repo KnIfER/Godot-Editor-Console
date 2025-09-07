@@ -1,18 +1,24 @@
 @tool
 extends Node
-class_name Runner
+
+# 1. use this file to test  grammar
+
+# 2. leave input blank to run this file
+ 
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-#	print("runner _ready")
-	pass # Replace with function body.
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-	
-func eval():
+func eval(e:EditorInterface, x:EditorPlugin):
 	print("runner eval")
-	pass
+	
+	var node:Button
+	
+	Time.get_ticks_msec()
+	
+	
+	
+	
+	
+	
+	return "hello"
