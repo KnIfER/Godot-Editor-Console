@@ -1,7 +1,20 @@
 
+- Update log 2025年9月7日
+  
+1. include FPS monitor
+1. learning from Debug Menu, make DDD auto reload by itself
+1. new configurable short-cut F12 to run code in clipboard
+1. "edit" button will open a temp script
+
+
+
+- Todo
+- [ ] a pie menu to run tool scripts
+
+
+
 # Console Input
 
-<img width="295" height="231" alt="image" src="https://github.com/user-attachments/assets/fdf2f91d-69a4-4a31-90cf-d6b45bb10b53" />
 
 <img width="1306" height="290" alt="image" src="https://github.com/user-attachments/assets/e399ddb8-9324-4efc-a58d-caa242ed6377" />
 
@@ -27,7 +40,7 @@ gn("%node_name_unique").process_mode = 4
 - `gr()`:  get root node of current scene
 
 
-- functions supported
+- simple functions supported
 - auto convert 4 space to tab (naive approach)
 
 - Internally, [`eval()`](https://www.reddit.com/r/godot/comments/vo40ya/how_can_i_run_strings_as_code_during_runtime/) is called : 
@@ -42,7 +55,7 @@ func eval(e:EdiorInterface,x:EditorPlugin):
 
 stolen from [Godot_debug_draw: Debug drawing utility for Godot Engine](https://github.com/Zylann/godot_debug_draw)
 
-how to use : project settings -> autoreload tab -> add name=`DDD`, path=`res://addons/console_input/debug_draw.gd`  
+how to use : no configuration required. it's genuine AUTO RELOAD SCRIPT now :
 
 then : 
 
@@ -50,9 +63,24 @@ then :
 DDD.set_text(....)
 ```
 
-- single file
 - remove ttf , use system font
 - add @tool to allow run in editor mode ——
 
 <img width="345" height="253" alt="image" src="https://github.com/user-attachments/assets/1d16141a-7c96-4d64-b1d7-79b89ba19381" />
+
+- new method DDD.vvv top place an Arrow
+
+
+
+# FPS monitor
+
+
+stolen from [Godot-debug-menu: Display in-game FPS/performance/hardware metrics in a Godot 4.x project](https://github.com/godot-extended-libraries/godot-debug-menu)  
+
+how to use :   
+
+```
+FPS.style = 1
+```
+
 
