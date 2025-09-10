@@ -3,6 +3,14 @@ extends Node
 class_name FU
 
 
+static func hhmm():
+	var now = Time.get_datetime_string_from_system()
+	var time_parts = now.split("T")[1].split(":")
+	var hour = time_parts[0]
+	var minute = time_parts[1]
+	var time_str = "%s:%s" % [hour, minute]
+	return time_str
+
 static func _gn(e, n):
 	var ret = null
 	if n.get_child_count()>0:
