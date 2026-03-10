@@ -24,13 +24,27 @@ func on_property_update(key:String):
 
 func _process(delta: float) -> void:
 	#printt('_process::', wparam);
-	if Input.is_action_just_pressed("auto_run"):
+#	if FU.debug() && Input.is_action_just_pressed("auto_run") and not DDD.auto_running:
+##		printt('_process_auto_run::', "auto_run");
+#		do_run()
+#		return
+	super._process(delta)
+
+func do_run():
+	if not DDD.auto_running:
+		printt('do_run::');
 		DDD.set_text("auto_run\nauto_run\nauto_run\n")
 		DDD.auto_running = true
 		find_obj()._ready()
 		DDD.auto_running = false
-		return
-	super._process(delta)
+
+func _enter_tree():
+	DDD.auto_runs.push_back(self)
+	
+func _exit_tree():
+	var idx:=DDD.auto_runs.find(self)
+	if idx>=0:
+		DDD.auto_runs.remove_at(idx)
 
 func _ready() -> void:
 	if Engine.is_editor_hint():

@@ -457,3 +457,15 @@ func vvv(pos, direction=0, scale=1):
 	body.material = arrow_body
 	head.material = arrow_head
 	return arrowP
+	
+#func get_camera_3d():
+#	return EditorInterface.get_editor_viewport_3d(0).get_camera_3d()
+
+var rand_state: int = 12345
+
+func rand_range(min_val: float, max_val: float) -> float:
+	rand_state = (1103515245 * rand_state + 12345) % 2147483648
+	var normalized = rand_state / 2147483648.0
+	return min_val + normalized * (max_val - min_val)
+	
+var auto_runs:=[AutoUpdate]

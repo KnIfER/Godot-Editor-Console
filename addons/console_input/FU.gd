@@ -1,7 +1,82 @@
 
-extends Node
+#extends Node
 class_name FU
 
+static func debug():
+	return Engine.is_editor_hint()
+	
+static func add_child(obj, ch):
+	obj.add_child(ch)
+	if Engine.is_editor_hint():
+		ch.owner = obj.get_tree().edited_scene_root
+	
+static func remove_childs(obj):
+	for node in obj.get_children():
+		node.queue_free()
+	
+static func now()->int:
+	return int(Time.get_unix_time_from_system()*1000)
+	
+static func get_system_time_msecs():
+	return int(Time.get_unix_time_from_system()*1000)
+
+static func build_rotation_from_axes(right: Vector3, up: Vector3) -> Vector3:
+	# Normalize the input vectors
+	var x_axis = right.normalized()
+	var y_axis = up.normalized()
+	# Calculate the forward vector and ensure orthogonality
+	var z_axis = x_axis.cross(y_axis).normalized()
+	y_axis = z_axis.cross(x_axis).normalized()
+	# Create a basis and convert to quaternion for stability
+	var basis = Basis(x_axis, y_axis, z_axis)
+	var quat = Quaternion(basis)
+	# Convert quaternion to Euler angles
+	var rot = quat.get_euler()
+	
+	#var min_angle_rad = atan2(2.5,352);
+	##printt('min_angle_rad::', min_angle_rad, min_angle_rad/PI*180);
+	#rot.x = round(rot.x / min_angle_rad) * min_angle_rad
+	#rot.y = round(rot.y / min_angle_rad) * min_angle_rad
+	#rot.z = round(rot.z / min_angle_rad) * min_angle_rad
+	return rot
+
+	
+	
+static func point_up_toward(obj:Node3D, fa:Vector3):
+	fa = fa.normalized()
+	var vx = -fa.z
+	var vz = fa.x
+	var vy = 0
+
+	var dot_vu = vx * fa.x + vy * fa.y + vz * fa.z
+	vx -= dot_vu * fa.x
+	vy -= dot_vu * fa.y
+	vz -= dot_vu * fa.z
+
+	var right = -Vector3(vx,vy,vz)
+
+	var rotation = build_rotation_from_axes(right, fa)
+	obj.rotation = rotation
+
+
+static func point_up_toward1(obj: Node3D, up_direction: Vector3):
+	# 确保上方向向量归一化
+	var fa = up_direction.normalized()
+	
+	# 计算右方向向量（与上方向垂直）
+	var temp = Vector3(0, 1, 0)
+	if fa.is_equal_approx(temp) or fa.is_equal_approx(-temp):
+		# 特殊情况：当上方向接近Y轴时使用X轴作为参考
+		temp = Vector3(1, 0, 0)
+	
+	var right = fa.cross(temp).normalized()
+	# 确保右方向与上方向严格垂直
+	right = right - right.project(fa)
+	right = right.normalized()
+	
+	# 获取旋转欧拉角并应用
+	var rotation = build_rotation_from_axes(right, fa)
+	obj.rotation = rotation
 
 static func hhmm():
 	var now = Time.get_datetime_string_from_system()

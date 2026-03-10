@@ -11,6 +11,11 @@ func _input(event):
 #	if event is InputEventKey and not event.pressed:
 #		if event.ctrl_pressed and event.shift_pressed and event.keycode == KEY_F13 or event.keycode == KEY_F12:
 #			run_clipboard()
+	if FU.debug() && DDD.auto_runs.size()>1 && Input.is_action_just_pressed("auto_run") and not DDD.auto_running:
+		for node in DDD.auto_runs:
+			if node is AutoUpdate:
+				node.do_run()
+			
 	if input_field.has_focus():
 		if event is InputEventKey and not event.pressed:
 			if event.ctrl_pressed and event.shift_pressed and event.keycode == KEY_ENTER: # and event.pressed

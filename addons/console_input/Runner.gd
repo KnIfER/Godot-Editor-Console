@@ -12,9 +12,12 @@ extends Node
 func eval(e:EditorInterface, x:EditorPlugin):
 	print("runner eval")
 	
-	var node:Button
+	var node:Node3D
 	
 	Time.get_ticks_msec()
+	
+	var matrix := Basis()
+
 	
 	#DDD.set_scene(sn())
 	#DDD.get_scene()
@@ -25,7 +28,6 @@ func eval(e:EditorInterface, x:EditorPlugin):
 	
 	
 	DDD.vvv(Vector3(0, 0, 0), Vector3(0, 1, 0), 1)
-	
 	
 	
 	

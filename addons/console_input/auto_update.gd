@@ -29,6 +29,7 @@ var exported_values: Dictionary = {}
 
 func on_property_update(key:String):
 	print('on_property_update')
+	check_obj._ready()
 	pass
 
 
