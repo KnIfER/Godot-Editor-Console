@@ -7,24 +7,32 @@ class_name ConsoleUI
 
 const FU = preload("./FU.gd")
 
+var lastRun := 0
+
 func _input(event):
 #	if event is InputEventKey and not event.pressed:
 #		if event.ctrl_pressed and event.shift_pressed and event.keycode == KEY_F13 or event.keycode == KEY_F12:
 #			run_clipboard()
-	if FU.debug() && DDD.auto_runs.size()>1 && Input.is_action_just_pressed("auto_run") and not DDD.auto_running:
+	if  DDD.auto_runs.size()>1 and Input.is_action_just_pressed("auto_run") && FU.debug() \
+		and Time.get_ticks_msec() - lastRun>250 \
+		and not DDD.auto_running:
+		lastRun = Time.get_ticks_msec()
 		for node in DDD.auto_runs:
 			if node is AutoUpdate:
 				node.do_run()
 			
 	if input_field.has_focus():
 		if event is InputEventKey and not event.pressed:
-			if event.ctrl_pressed and event.shift_pressed and event.keycode == KEY_ENTER: # and event.pressed
-				_on_edit_pressed()
-				_on_run_pressed()
-				accept_event()
-			elif event.ctrl_pressed and event.keycode == KEY_ENTER: # and event.pressed
-				_on_run_pressed()
-				accept_event()
+			if Time.get_ticks_msec() - lastRun>250:
+				if event.ctrl_pressed and event.shift_pressed and event.keycode == KEY_ENTER: # and event.pressed
+					_on_edit_pressed()
+					_on_run_pressed()
+					accept_event()
+					lastRun = Time.get_ticks_msec()
+				elif event.ctrl_pressed and event.keycode == KEY_ENTER: # and event.pressed
+					_on_run_pressed()
+					accept_event()
+					lastRun = Time.get_ticks_msec()
 
 
 func _ready() -> void:

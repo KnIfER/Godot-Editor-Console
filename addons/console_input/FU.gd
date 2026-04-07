@@ -201,3 +201,62 @@ static func StrStartsWith(text: String, prefix: String, offset: int):
 
 
 const space_4 :String= "  "+"  "
+
+
+static func get_shader_parameter(material_override, name) :
+	var ret =  material_override.get_shader_parameter(name)
+	if ret==null:
+		printt('null::get_shader_parameter', name);
+		# if "in" in name:
+		ret = PackedVector4Array()
+		material_override.set_shader_parameter(name, ret)
+	return ret
+
+static func ensure_size(output_array, size) :
+	if(output_array.size()<=size):
+		output_array.append(Vector4.ZERO)
+
+static func setVec4i(output_array, cc, r,g,b,a):
+	if(output_array.size()<=cc*4):
+		output_array.append(0)
+		output_array.append(0)
+		output_array.append(0)
+		output_array.append(0)
+	output_array.set(cc*4, r)
+	output_array.set(cc*4 + 1, g)
+	output_array.set(cc*4 + 2, b)
+	output_array.set(cc*4 + 3, a)
+
+
+static func load_external_tex(path):
+	# if exists(path):
+	var tex_file = FileAccess.open(path, FileAccess.READ)
+	if not tex_file:
+		push_error("无法打开文件: ", path)
+		return null
+	var bytes = tex_file.get_buffer(tex_file.get_length())
+	tex_file.close()  # 可以提前关闭文件，因为已经获取了所有数据
+	var img = Image.new()
+	# 在 Godot 4 中，load_png_from_buffer 改为返回 Error 枚举
+	var error = img.load_png_from_buffer(bytes)
+	if error != OK:
+		push_error("PNG 加载失败: ", error)
+		return null
+	var imgtex := ImageTexture.create_from_image(img)
+	return imgtex
+	# return null
+
+static func load_tex(path):
+	if exists(path):
+		return load(path)
+	return null
+	
+static func cloneMaterial(src)->Material:
+	var ret :=			ShaderMaterial.new()
+	ret.shader = src.shader
+	for param in src.shader.get_shader_uniform_list():
+		var v = src.get_shader_parameter(param.name)
+		if v is Array:
+			v = v.duplicate()
+		ret.set_shader_parameter(param.name, v)
+	return ret

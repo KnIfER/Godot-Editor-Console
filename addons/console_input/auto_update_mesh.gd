@@ -1,6 +1,6 @@
 @tool
-extends Node3D
-class_name AutoUpdate
+extends CSGMesh3D
+class_name AutoUpdateMesh
 
 
 #@export var test_health: int = 100

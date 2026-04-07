@@ -366,8 +366,8 @@ var scene_absolute
 func set_scene(s, ab = false):
 	scene = s
 	scene_absolute = ab
-func get_scene():
-	if scene and is_instance_valid(scene):
+func get_scene(skip_cache:=true):
+	if not skip_cache and scene and is_instance_valid(scene):
 		return scene
 	scene = _get_scene(get_node("/root"))
 	scene_absolute = false

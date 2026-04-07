@@ -1,5 +1,6 @@
 @tool
 extends AutoUpdate
+class_name AutoRun
 
 @export var eval := false:
 	set(v):
