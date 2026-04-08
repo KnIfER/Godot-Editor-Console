@@ -1,5 +1,20 @@
 
-- Update log 2025年9月7日
+- Update Apr 7  2026
+  
+https://forum.godotengine.org/t/editor-console-plugin/136751  
+  
+1. add customizable dynamic menu by parsing  `res://addons/console_input/userscripts/*snippets.gd`
+1. add some useful tools in the popupmenu: 
+  
+1. Scroll scene tree to top or bottom
+1. Scroll inspector panel to top or bottom
+1. Toggle node disabled or enabled
+1. Batch move selected nodes gui ( a xyz dialog )
+1. You can open snippet source file with one click !
+
+
+
+- Update 2025年9月7日
   
 1. include FPS monitor
 1. learning from Debug Menu, make DDD auto reload by itself
