@@ -32,12 +32,15 @@ func __batch_move_selected_nodes(editor:EditorInterface, plugin, data):
 	var nodes = editor.get_selection().get_selected_nodes()
 		
 	var panel_bg := Panel.new()
-	panel_bg.custom_minimum_size = editor.get_viewport().get_visible_rect().size
+	#var viewport = editor.get_viewport() if editor.has_method("get_viewport") else editor.get_editor_viewport_3d()
+	#var rect = viewport.get_visible_rect()
+	var rect_size = Vector2(DisplayServer.window_get_size())
+	panel_bg.custom_minimum_size = rect_size
 	panel_bg.modulate = Color(1, 1, 1, 0)  # alpha = 0
 	
 	var panel := Panel.new()
 	panel.custom_minimum_size = Vector2(380, 160)
-	panel.position = (editor.get_viewport().get_visible_rect().size - panel.custom_minimum_size) / 2
+	panel.position = (rect_size - panel.custom_minimum_size) / 2
 	
 	panel_bg.mouse_filter = Control.MOUSE_FILTER_STOP
 	panel_bg.gui_input.connect(func(event):
