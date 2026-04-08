@@ -298,3 +298,8 @@ static func nosuffix(filename: String) -> String:
 # 	if ClassDB.class_exists(cn):
 # 		return ClassDB.instantiate(cn)
 # 	return null
+
+static func get_or_add(dict: Dictionary, key, default_value):
+	if not dict.has(key):
+		dict[key] = default_value
+	return dict[key]

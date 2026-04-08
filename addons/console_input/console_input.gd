@@ -99,6 +99,7 @@ class UserScript:
 	var content
 	var clazz
 	var full_path
+	var args_c
 	func _init(fn):
 		filename = fn
 		display = FU.nosuffix(fn).replace("_", " ")
@@ -108,15 +109,23 @@ func scan_found_script(file_name, full_path):
 	if file_name.ends_with(".gd"):
 		if file_name.find("snippets")>=0: # load class
 			var clazz = load(full_path).new()
+			# clazz = load(full_path).new()
+			# script_instance_cache[file_name] = clazz
+			# printt("clazz::", clazz)
 			var methods = clazz.get_method_list()
 			for met in methods:
 				if met.name.begins_with("__"):
 					item = UserScript.new(met.name.substr(2))
 					# printt("item::", met.name)
+					item.args_c = met.args.size()
 					item.clazz = clazz
 					item.full_path = full_path
 					script_items.push_back(item)
 					item = null
+				item = UserScript.new("")
+				item.display = "Open :: "+file_name
+				item.full_path = full_path
+				item.category = 3
 	# 	else: # record class
 	# 		item = UserScript.new(file_name)
 	# 		item.full_path = full_path
@@ -151,15 +160,29 @@ func _on_edit_pressed():
 	# plugin.get_editor_interface().edit_resource(load("res://addons/console_input/Runner.gd"))
 	show_dynamic_menu()
 
+var script_instance_cache := {}
 func _on_use_menu(id: int):
 	var item := script_items[id-1]
-	printt("item::", item.filename)
-	if item.clazz:
-		var ret = item.clazz.callv("__"+item.filename, [plugin.get_editor_interface(), plugin])
+	printt("use_menu::", item.filename)
+	if item.category==3: # open and eidt source file
+		plugin.get_editor_interface().edit_resource(load(item.full_path))
+	elif item.clazz:
+		var file_name = item.filename
+		var args = [plugin.get_editor_interface(), plugin]
+		if item.args_c>2:
+			var data
+			if plugin.script_data.has(file_name):
+				data = plugin.script_data[file_name]
+			else:
+				data = {}
+				plugin.script_data[file_name] = data
+			args.push_back(data)
+		var ret = item.clazz.callv("__"+file_name, args)
 		if typeof(ret)==TYPE_STRING:
 			eval_string(ret)
 	if !plugin.keepMenuOpen:
 		popup_menu.queue_free()
+		script_items = []
 	plugin.keepMenuOpen = false
 
 var popup_menu:PopupMenu

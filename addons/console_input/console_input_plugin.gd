@@ -15,6 +15,7 @@ var console_scene: PackedScene
 var console_instance: ConsoleUI
 
 var keepMenuOpen:=false
+var script_data:={}
 
 func _enter_tree() :
 	add_autoload_singleton("DDD", "res://addons/console_input/debug_draw.tscn")
