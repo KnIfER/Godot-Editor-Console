@@ -24,6 +24,7 @@ func _input(event):
 	if input_field.has_focus():
 		if event is InputEventKey and not event.pressed:
 			if Time.get_ticks_msec() - lastRun>250:
+				lastRun = Time.get_ticks_msec()
 				if event.ctrl_pressed and event.shift_pressed and event.keycode == KEY_ENTER: # and event.pressed
 					_on_edit_pressed()
 					_on_run_pressed()
@@ -89,8 +90,106 @@ func replace_dd_macro(input, d=true):
 		result = result.replace(full_match, replacement)
 	return result
 	
+var script_items :Array[UserScript]= []
+
+class UserScript:
+	var filename
+	var display
+	var category
+	var content
+	var clazz
+	var full_path
+	func _init(fn):
+		filename = fn
+		display = FU.nosuffix(fn).replace("_", " ")
+
+func scan_found_script(file_name, full_path):
+	var item :UserScript= null
+	if file_name.ends_with(".gd"):
+		if file_name.find("snippets")>=0: # load class
+			var clazz = load(full_path).new()
+			var methods = clazz.get_method_list()
+			for met in methods:
+				if met.name.begins_with("__"):
+					item = UserScript.new(met.name.substr(2))
+					# printt("item::", met.name)
+					item.clazz = clazz
+					item.full_path = full_path
+					script_items.push_back(item)
+					item = null
+	# 	else: # record class
+	# 		item = UserScript.new(file_name)
+	# 		item.full_path = full_path
+	# 		item.category = 1
+			
+	# elif file_name.ends_with(".gd.txt"): # record text
+	# 	item = UserScript.new(file_name)
+	# 	item.full_path = full_path
+	# 	item.category = 2
+	if item:
+		script_items.push_back(item)
+	
+func scan_userscripts_directory(dir_path):
+	var dir = DirAccess.open(dir_path)
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		
+		while file_name != "":
+			if not dir.current_is_dir():
+				var full_path = dir_path + "/" + file_name
+				scan_found_script(file_name, full_path)
+				
+			file_name = dir.get_next()
+		
+		dir.list_dir_end()
+	else:
+		print("无法打开目录: ", dir_path)
+
+
 func _on_edit_pressed():
-	plugin.get_editor_interface().edit_resource(load("res://addons/console_input/Runner.gd"))
+	# plugin.get_editor_interface().edit_resource(load("res://addons/console_input/Runner.gd"))
+	show_dynamic_menu()
+
+func _on_use_menu(id: int):
+	var item := script_items[id-1]
+	printt("item::", item.filename)
+	if item.clazz:
+		var ret = item.clazz.callv("__"+item.filename, [plugin.get_editor_interface(), plugin])
+		if typeof(ret)==TYPE_STRING:
+			eval_string(ret)
+	if !plugin.keepMenuOpen:
+		popup_menu.queue_free()
+	plugin.keepMenuOpen = false
+
+var popup_menu:PopupMenu
+func show_dynamic_menu():
+	plugin.keepMenuOpen = false
+	script_items = []
+	scan_found_script("snippets.gd", "res://addons/console_input/snippets.gd")
+	script_items.push_back(null)
+	scan_userscripts_directory("res://addons/console_input/userscripts/")
+	script_items.push_back(null)
+	
+	var seps_cnt = 2
+	var pos: Vector2 = %EditButton.global_position-Vector2(0,(script_items.size()-2)*31+7*2)
+	var popup := PopupMenu.new()
+	popup.hide_on_item_selection = false
+	var cc=0
+	for fn in script_items:
+		cc+=1
+		if fn==null:
+			popup.add_separator()
+		else:
+			popup.add_item(fn.display, cc)
+	popup.id_pressed.connect(_on_use_menu)
+	popup_menu = popup
+
+	# 弹出菜单
+	add_child(popup)
+	popup.position = pos
+	popup.popup()
+	
 
 #func _on_edit_pressed_ret():
 #	var url = 'http://127.0.0.1:8080/DB.jsp?bat=D:/Code/FigureOut/chrome/extesions/AutoHotKey/gd_clear.ahk'
@@ -117,11 +216,14 @@ func _on_run_pressed():
 	# printt('text', %EditButton.button_pressed)
 	var text = input_field.text
 	text = process_text(text)
-	# print('text', text)
-	var run_code
 	if "" == text: # Runner.gd
-		run_code = FU.read_all("res://addons/console_input/Runner.gd")
-	elif "func eval" in text: # as-is
+		text = FU.read_all("res://addons/console_input/Runner.gd")
+	# print('text', text)
+	eval_string(text)
+		
+func eval_string(text):
+	var run_code
+	if "func eval" in text: # as-is
 		run_code = text
 	else: # separate
 		var end_pos = text.length() 
@@ -155,7 +257,7 @@ func _on_run_pressed():
 			code = code.substr(1)
 		else:
 			code = code.replace("\n", "\n\t")
-			
+
 		run_code = """@tool
 extends Node
 var _et_ # : EditorInterface

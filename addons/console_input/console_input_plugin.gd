@@ -14,6 +14,8 @@ var copy_root_shc: Shortcut
 var console_scene: PackedScene
 var console_instance: ConsoleUI
 
+var keepMenuOpen:=false
+
 func _enter_tree() :
 	add_autoload_singleton("DDD", "res://addons/console_input/debug_draw.tscn")
 	add_autoload_singleton("FPS", "res://addons/console_input/debug_menu.tscn")
@@ -28,6 +30,7 @@ func _enter_tree() :
 	
 	var input:ConsoleUI = console_instance
 	input.set_plugin_reference(self)
+#	DDD.editor_interface = get_editor_interface()
 #	input.plugin = self
 	
 #	print("Console Input plugin enabled")
@@ -36,7 +39,7 @@ func _enter_tree() :
 #	var file_system: EditorFileSystem = get_editor_interface().get_resource_filesystem()
 #	file_system.filesystem_changed.connect(schedule_update)
 
-	get_editor_settings().settings_changed.connect(sync_settings)
+	# get_editor_settings().settings_changed.connect(sync_settings)
 	
 	var current_runtime_path = OS.get_executable_path()
 	var last_runtime_file = "res://.godot/last_runtime.txt"

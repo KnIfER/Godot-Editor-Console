@@ -14,10 +14,12 @@ func eval(e:EditorInterface, x:EditorPlugin):
 	
 	var node:Node3D
 	
+	
 	Time.get_ticks_msec()
 	
 	var matrix := Basis()
 
+	# EditorInterface.get_base_control().find_child("Scene", true, false)                          
 	
 	#DDD.set_scene(sn())
 	#DDD.get_scene()

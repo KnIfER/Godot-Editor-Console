@@ -110,6 +110,7 @@ static func _gc(e, n):
 	var ret = null
 	if n.get_child_count()>0:
 		for cn in n.get_children():
+			# printt("get_basename::", cn.get_class().get_basename())
 			if cn.get_class().get_basename()==e:
 				ret = cn
 				break
@@ -156,7 +157,7 @@ static func getTmpText():
 	return DisplayServer.clipboard_get()
 	
 static func setTmpText(str):
-	DisplayServer.clipboard_set(str)
+	DisplayServer.clipboard_set(str(str))
 
 
 static func rpath(ref, relative_path):
@@ -202,15 +203,6 @@ static func StrStartsWith(text: String, prefix: String, offset: int):
 
 const space_4 :String= "  "+"  "
 
-
-static func get_shader_parameter(material_override, name) :
-	var ret =  material_override.get_shader_parameter(name)
-	if ret==null:
-		printt('null::get_shader_parameter', name);
-		# if "in" in name:
-		ret = PackedVector4Array()
-		material_override.set_shader_parameter(name, ret)
-	return ret
 
 static func ensure_size(output_array, size) :
 	if(output_array.size()<=size):
@@ -260,3 +252,49 @@ static func cloneMaterial(src)->Material:
 			v = v.duplicate()
 		ret.set_shader_parameter(param.name, v)
 	return ret
+
+static func repeatString(s: String, count: int) -> String:
+	var res = ""
+	for i in range(count):
+		res += s
+	return res
+
+static func has_property(n,key) :
+	var props = n.get_property_list()
+	for prop in props:
+		if prop.name==key :
+			return true
+	return false
+
+
+static func enhance(ctrl,en=true) :
+	ctrl.modulate = Color.YELLOW if en else Color.WHITE
+	
+	
+static func log(parent, indent: int = 0):
+	for child in parent.get_children():
+		# if child is Control:
+		var text = ""
+		if FU.has_property(child, "text"):
+			text = "  "+child.text
+		print(FU.repeatString(" ", 4*indent) + child.get_class().get_basename()+"/"+child.name+text)
+		FU.log(child, indent + 1)
+	
+#static func get_class_chain(node: Node) -> Array:
+	#var chain = []
+	#var current = node
+	#while current:
+		#chain.append(current.get_class())
+		#current = current.get_parent() if current.get_parent() else null
+	#return chain
+	
+static func nosuffix(filename: String) -> String:
+	var last_dot = filename.rfind(".")
+	if last_dot > 0:
+		return filename.substr(0, last_dot)
+	return filename
+	
+# static func class_for_name(cn: String):
+# 	if ClassDB.class_exists(cn):
+# 		return ClassDB.instantiate(cn)
+# 	return null

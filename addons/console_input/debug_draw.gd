@@ -23,6 +23,7 @@ const TEXT_SIZE = 12
 var tag0
 var tag1
 var auto_running := false
+var editor_interface
 # 2D
 
 var _canvas_item : CanvasItem = null

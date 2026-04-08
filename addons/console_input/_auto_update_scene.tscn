@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cr4is54x5u6db"]
+
+[ext_resource type="Script" path="res://addons/console_input/auto_update_std.gd" id="1_a2vpr"]
+
+[node name="auto_update_std" type="Node3D"]
+script = ExtResource("1_a2vpr")

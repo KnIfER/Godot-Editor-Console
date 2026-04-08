@@ -35,7 +35,7 @@ func on_property_update(key:String):
 	pass
 
 
-func is_export(usage):
+static func is_export(usage):
 	return (usage&PROPERTY_USAGE_EDITOR) and (usage&PROPERTY_USAGE_SCRIPT_VARIABLE )
 
 
