@@ -37,4 +37,6 @@ func __test_user_script(editor, plugin, data):
 	cc+=1
 	printt("cc=", cc)
 	data["cc"] = cc
-
+	
+func __shallow_duplicate(editor, plugin, data):
+	return """FU.shallow_duplicate(sn())"""

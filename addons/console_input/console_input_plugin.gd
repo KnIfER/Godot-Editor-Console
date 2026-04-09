@@ -17,6 +17,10 @@ var console_instance: ConsoleUI
 var keepMenuOpen:=false
 var script_data:={}
 
+func run_code(code:String):
+	# var code= "res://addons/console_input/GU.gd::method_name"
+	return console_instance.eval_string(code)
+
 func _enter_tree() :
 	add_autoload_singleton("DDD", "res://addons/console_input/debug_draw.tscn")
 	add_autoload_singleton("FPS", "res://addons/console_input/debug_menu.tscn")
@@ -31,6 +35,7 @@ func _enter_tree() :
 	
 	var input:ConsoleUI = console_instance
 	input.set_plugin_reference(self)
+	DDD.plugin = self
 #	DDD.editor_interface = get_editor_interface()
 #	input.plugin = self
 	

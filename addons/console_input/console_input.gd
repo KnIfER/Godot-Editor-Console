@@ -160,6 +160,30 @@ func _on_edit_pressed():
 	# plugin.get_editor_interface().edit_resource(load("res://addons/console_input/Runner.gd"))
 	show_dynamic_menu()
 
+func invoke_gd_file(full_path, method_name):
+	printt("invoke_gd_file::", full_path, method_name)
+	var clazz = load(full_path).new()
+	var methods = clazz.get_method_list()
+	for met in methods:
+		if met.name==method_name:
+			printt("method_name::", method_name)
+			var args_c = met.args.size()
+			return run_clazz_method(clazz, full_path, method_name, args_c)
+	printt("找不到 method_name::", method_name)
+			
+
+func run_clazz_method(clazz, full_path, method_name, args_c):
+	var args = []
+	if args_c>0:
+		args.push_back(plugin.get_editor_interface())
+	if args_c>1:
+		args.push_back(plugin)
+	if args_c>2:
+		var data = FU.get_or_add(plugin.script_data, full_path, {})
+		args.push_back(data)
+	return clazz.callv(method_name, args)
+			
+
 var script_instance_cache := {}
 func _on_use_menu(id: int):
 	var item := script_items[id-1]
@@ -167,17 +191,7 @@ func _on_use_menu(id: int):
 	if item.category==3: # open and eidt source file
 		plugin.get_editor_interface().edit_resource(load(item.full_path))
 	elif item.clazz:
-		var file_name = item.filename
-		var args = [plugin.get_editor_interface(), plugin]
-		if item.args_c>2:
-			var data
-			if plugin.script_data.has(file_name):
-				data = plugin.script_data[file_name]
-			else:
-				data = {}
-				plugin.script_data[file_name] = data
-			args.push_back(data)
-		var ret = item.clazz.callv("__"+file_name, args)
+		var ret = run_clazz_method(item.clazz, item.full_path, "__"+item.filename, item.args_c)
 		if typeof(ret)==TYPE_STRING:
 			eval_string(ret)
 	if !plugin.keepMenuOpen:
@@ -238,17 +252,22 @@ func process_text(text):
 func _on_run_pressed():
 	# printt('text', %EditButton.button_pressed)
 	var text = input_field.text
-	text = process_text(text)
 	if "" == text: # Runner.gd
 		text = FU.read_all("res://addons/console_input/Runner.gd")
 	# print('text', text)
-	eval_string(text)
+	var ret = eval_string(text)
+	print("ret:: ", ret)
 		
 func eval_string(text):
+	# printt("eval_string::", text)
 	var run_code
 	if "func eval" in text: # as-is
 		run_code = text
+	elif text.find(".gd::")>0:
+		var parts = text.split("\n")[0].split("::")
+		return invoke_gd_file(parts[0], parts[1]) # script_path, method_name
 	else: # separate
+		text = process_text(text)
 		var end_pos = text.length() 
 		var funcs = ""
 		var code = text
@@ -321,13 +340,14 @@ func eval(e,x):
 	var script = GDScript.new()
 	script.set_source_code(run_code)
 	var err = script.reload()
-	if err:
-		print("err::", err, run_code)
+	# if err:
+	# 	print("err::", err, run_code)
 	# print("err::", err, run_code)
 
 
 	%Runner.set_script(script)
 	var ret = %Runner.eval(plugin.get_editor_interface(), plugin)
+	# printt("ret ??? ::", ret, run_code)
 	script.set_source_code("")
-	print("ret:: ", ret)
+	return ret
  

@@ -24,6 +24,7 @@ var tag0
 var tag1
 var auto_running := false
 var editor_interface
+var plugin
 # 2D
 
 var _canvas_item : CanvasItem = null

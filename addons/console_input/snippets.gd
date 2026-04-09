@@ -80,6 +80,7 @@ func __batch_move_selected_nodes(editor:EditorInterface, plugin, data):
 		panel.queue_free()
 		panel_bg.queue_free()
 		lastMoveDelta = Vector3(spins[0].value, spins[1].value, spins[2].value)
+		data['moved'] = lastMoveDelta
 		for node in nodes:
 			if node is Node3D:
 				node.position += lastMoveDelta

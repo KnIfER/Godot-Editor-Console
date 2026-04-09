@@ -10,6 +10,11 @@ static func add_child(obj, ch):
 	if Engine.is_editor_hint():
 		ch.owner = obj.get_tree().edited_scene_root
 	
+static func add_sibling(obj, ch):
+	obj.add_sibling(ch)
+	if Engine.is_editor_hint():
+		ch.owner = obj.get_tree().edited_scene_root
+	
 static func remove_childs(obj):
 	for node in obj.get_children():
 		node.queue_free()
@@ -303,3 +308,23 @@ static func get_or_add(dict: Dictionary, key, default_value):
 	if not dict.has(key):
 		dict[key] = default_value
 	return dict[key]
+
+static func shallow_clone_node(source: Node) -> Node:
+	var clone = source.duplicate()
+	remove_childs(clone)
+	return clone
+
+static func shallow_duplicate(node: Node3D) -> Node3D:
+	var clone = shallow_clone_node(node)
+	if node.get_parent():
+		add_sibling(node, clone)
+	clone.name = node.name + "_Clone"
+	return clone
+
+static func toggle_visible(nodes):
+	var vis = !nodes[0].get("visible")
+	for n in nodes:
+		n.set("visible", vis)
+
+static func run(code):
+	return DDD.plugin.run_code(code)
