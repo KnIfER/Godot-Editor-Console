@@ -1,5 +1,6 @@
 @tool
 extends EditorPlugin
+class_name ConsoleInputPlugin
 
 const PREFIX: StringName = &"plugin/console_input/"
 
@@ -18,7 +19,7 @@ var keepMenuOpen:=false
 var ddd_set:=false
 var script_data:={}
 
-func run_code(code:String):
+func run_code(code):
 	# var code= "res://addons/console_input/GU.gd::method_name"
 	return console_instance.eval_string(code)
 
@@ -82,8 +83,7 @@ func _process(delta: float) -> void:
 
 func _exit_tree() :
 	remove_control_from_bottom_panel(console_instance)
-	console_instance.queue_free()
-	
+	console_instance.free()
 	print("Console Input plugin disabled")
 
 func _shortcut_input(event: InputEvent) -> void:

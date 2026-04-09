@@ -253,10 +253,31 @@ static func cloneMaterial(src)->Material:
 	ret.shader = src.shader
 	for param in src.shader.get_shader_uniform_list():
 		var v = src.get_shader_parameter(param.name)
-		if v is Array:
+		# if v is Array:
+		if !is_primitive(v) && (v is Array || is_packed_array(v)):
 			v = v.duplicate()
 		ret.set_shader_parameter(param.name, v)
 	return ret
+
+static func is_primitive(v) -> bool:
+	return typeof(v) in [
+		TYPE_INT,
+		TYPE_FLOAT,
+		TYPE_BOOL,
+		TYPE_STRING,
+		0
+	]
+	
+static func is_packed_array(v) -> bool:
+	return typeof(v) in [
+		TYPE_PACKED_VECTOR4_ARRAY,
+		TYPE_PACKED_BYTE_ARRAY,
+		TYPE_PACKED_INT32_ARRAY,
+		TYPE_PACKED_FLOAT32_ARRAY,
+		TYPE_PACKED_STRING_ARRAY,
+		# ...其他
+	]
+
 
 static func repeatString(s: String, count: int) -> String:
 	var res = ""

@@ -112,6 +112,7 @@ offset_top = 152.0
 offset_right = 213.0
 offset_bottom = 175.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_v761p")
+button_mask = 7
 text = "Tools"
 script = ExtResource("2_vj2xv")
 

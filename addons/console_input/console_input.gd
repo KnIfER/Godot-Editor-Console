@@ -22,12 +22,15 @@ func _input(event):
 			if node is AutoUpdate:
 				node.do_run()
 			
+	if not plugin.ddd_set:
+		var ddd = FU.ddd(self)
+		if ddd!=null:
+			ddd.plugin = plugin
+			plugin.ddd_set=true
+			
 	if input_field.has_focus():
-		if not plugin.ddd_set:
-			var ddd = FU.ddd(self)
-			if ddd!=null:
-				ddd.plugin = self
-				plugin.ddd_set=true
+		# if not DDD.plugin:
+		# 	DDD.plugin = plugin
 		if event is InputEventKey and not event.pressed:
 			if Time.get_ticks_msec() - lastRun>250:
 				lastRun = Time.get_ticks_msec()
@@ -261,14 +264,14 @@ func _on_run_pressed():
 	if "" == text: # Runner.gd
 		text = FU.read_all("res://addons/console_input/Runner.gd")
 	# print('text', text)
-	var ret = eval_string(text)
-	print("ret:: ", ret)
+	var ret = eval_string(text, true)
 		
-func eval_string(text):
+func eval_string(text, pret:=false):
 	# printt("eval_string::", text)
 	var run_code
 	if "func eval" in text: # as-is
 		run_code = text
+		pret = false
 	elif text.find(".gd::")>0:
 		var parts = text.split("\n")[0].split("::")
 		return invoke_gd_file(parts[0], parts[1]) # script_path, method_name
@@ -305,11 +308,13 @@ func eval_string(text):
 			code = code.substr(1)
 		else:
 			code = code.replace("\n", "\n\t")
+		pret = pret and code.find("return ")>=0
 
 		run_code = """@tool
 extends Node
 var _et_ # : EditorInterface
 var _ex_ # : EditorPlugin
+var _dat_ := {}
 func sn(idx=0):
 	return sns()[idx]
 func sns():
@@ -337,9 +342,10 @@ func kn():
 
 # start
 %s
-func eval(e,x):
+func eval(e,x,d):
 	_et_ = e
 	_ex_ = x
+	_dat_ = d
 	%s
 """ % [funcs, code]
 
@@ -352,8 +358,10 @@ func eval(e,x):
 
 
 	%Runner.set_script(script)
-	var ret = %Runner.eval(plugin.get_editor_interface(), plugin)
+	var ret = %Runner.eval(plugin.get_editor_interface(), plugin, plugin.script_data)
 	# printt("ret ??? ::", ret, run_code)
 	script.set_source_code("")
+	if pret:
+		print("ret:: ", ret)
 	return ret
  
