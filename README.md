@@ -9,26 +9,11 @@ When calling `method_name`, the following will be passed in:
 
 Therefore, the method in the script must have 0 to 3 parameters, and they must be defined in the correct order.
 
-# 2 eval
+# 2. eval
 
 Enter simple code in the edit box. When press the Run button, this plugin concatenates the text and executes the method. 
 
-It is called `eval`.  Three parameters are passed in to `eval` :
-
-```
-func eval(e:EdiorInterface,x:EditorPlugin, d:{}):
-  your code
-```
-To prevent confusion, these three parameters are saved as field : `_et_`, `_ex_`, `_dat_`：
-```
-var _et_:EdiorInterface
-var _ex_:EditorPlugin
-var _dat_ := {}
-func eval(e,x,d):
-	_et_ = e
-	_ex_ = x
-	_dat_ = d
-```
+It is called `eval`.  Also, three parameters are passed in to it : `e,x,d`  or `_et_`, `_ex_`, `_dat_` To prevent confusion.
 
 
 ## Update Apr 9  2026
