@@ -12,7 +12,7 @@ https://forum.godotengine.org/t/editor-console-plugin/136751
 1. Scroll inspector panel to top or bottom
 1. Toggle node disabled or enabled
 1. Batch move selected nodes gui ( a xyz dialog )
-1. You can open snippet source file with one click !
+1. You can open snippet source file, and enjoy **full syntax highligh and code completion!**
 
 
 
