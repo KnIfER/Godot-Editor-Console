@@ -1,3 +1,55 @@
+# 1. execute any script.gd
+
+1. execute extracted methods from `userscripts/*snippets.gd`
+2. execute any gdscript file by evaluating res://path::method_name
+
+When calling `method_name`, the following will be passed in:
+
+`editor:EditorInterface`  `plugin:EditorPlugin`  `data:={}`
+
+Therefore, the method in the script must have 0 to 3 parameters, and they must be defined in the correct order.
+
+# 2 eval
+
+Enter simple code in the edit box. When press the Run button, this plugin concatenates the text and executes the method. 
+
+It is called `eval`.  Three parameters are passed in to `eval` :
+
+```
+func eval(e:EdiorInterface,x:EditorPlugin, d:{}):
+  your code
+```
+To prevent confusion, these three parameters are saved as field : `_et_`, `_ex_`, `_dat_`：
+```
+var _et_:EdiorInterface
+var _ex_:EditorPlugin
+var _dat_ := {}
+func eval(e,x,d):
+	_et_ = e
+	_ex_ = x
+	_dat_ = d
+```
+
+
+## Update Apr 9  2026
+- add ability run script methods from `eval`:  
+```gdscript
+res://path/to/script.gd::method_name
+```
+
+- add ability to be invoked by 3rd party addons: 
+
+```gdscript
+var ret = FU.run("=1+1")
+```
+
+Actually I'm using this in ( modified version of ) [GDTerminal](https://github.com/ProgrammerOnCoffee/GDTerminal), which turns it into a sub-module of my plugin!
+
+<img width="438" height="232" alt="image" src="https://github.com/user-attachments/assets/135699dd-9d2f-46d4-97d7-f21296676d01" />
+
+<img width="441" height="375" alt="image" src="https://github.com/user-attachments/assets/89bf44c9-2d94-4553-880c-ca8fa65e7a4a" />
+
+
 
 ### Update Apr 7  2026
   
@@ -63,7 +115,7 @@ gn("%node_name_unique").process_mode = 4
 
 - Internally, [`eval()`](https://www.reddit.com/r/godot/comments/vo40ya/how_can_i_run_strings_as_code_during_runtime/) is called : 
 ```
-func eval(e:EdiorInterface,x:EditorPlugin):
+func eval(e:EdiorInterface,x:EditorPlugin,d:={}):
   your code
 ```
 - `= some value` on the last line, and that value will be return by eval(), subsequently printed to OUTPUT window.
