@@ -1,4 +1,4 @@
-
+## warning :: Don't modify this file, create your_snippets.gd instead!
 
 
 func math(a,b):

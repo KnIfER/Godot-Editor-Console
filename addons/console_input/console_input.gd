@@ -13,6 +13,7 @@ func _input(event):
 #	if event is InputEventKey and not event.pressed:
 #		if event.ctrl_pressed and event.shift_pressed and event.keycode == KEY_F13 or event.keycode == KEY_F12:
 #			run_clipboard()
+		
 	if  DDD.auto_runs.size()>1 and Input.is_action_just_pressed("auto_run") && FU.debug() \
 		and Time.get_ticks_msec() - lastRun>250 \
 		and not DDD.auto_running:
@@ -22,6 +23,11 @@ func _input(event):
 				node.do_run()
 			
 	if input_field.has_focus():
+		if not plugin.ddd_set:
+			var ddd = FU.ddd(self)
+			if ddd!=null:
+				ddd.plugin = self
+				plugin.ddd_set=true
 		if event is InputEventKey and not event.pressed:
 			if Time.get_ticks_msec() - lastRun>250:
 				lastRun = Time.get_ticks_msec()
@@ -187,7 +193,7 @@ func run_clazz_method(clazz, full_path, method_name, args_c):
 var script_instance_cache := {}
 func _on_use_menu(id: int):
 	var item := script_items[id-1]
-	printt("use_menu::", item.filename)
+	# printt("use_menu::", item.filename)
 	if item.category==3: # open and eidt source file
 		plugin.get_editor_interface().edit_resource(load(item.full_path))
 	elif item.clazz:

@@ -15,6 +15,7 @@ var console_scene: PackedScene
 var console_instance: ConsoleUI
 
 var keepMenuOpen:=false
+var ddd_set:=false
 var script_data:={}
 
 func run_code(code:String):
@@ -35,7 +36,12 @@ func _enter_tree() :
 	
 	var input:ConsoleUI = console_instance
 	input.set_plugin_reference(self)
-	DDD.plugin = self
+	
+	# var ddd = FU.ddd(self)
+	# if ddd!=null:
+	# 	ddd.plugin = self
+	# 	ddd_set=true
+	
 #	DDD.editor_interface = get_editor_interface()
 #	input.plugin = self
 	

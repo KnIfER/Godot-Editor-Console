@@ -314,7 +314,7 @@ static func shallow_clone_node(source: Node) -> Node:
 	remove_childs(clone)
 	return clone
 
-static func shallow_duplicate(node: Node3D) -> Node3D:
+static func shallow_duplicate(node: Node) -> Node:
 	var clone = shallow_clone_node(node)
 	if node.get_parent():
 		add_sibling(node, clone)
@@ -328,3 +328,6 @@ static func toggle_visible(nodes):
 
 static func run(code):
 	return DDD.plugin.run_code(code)
+
+static func ddd(n):
+	return n.get_tree().root.get_node("DDD")
