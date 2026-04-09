@@ -1,7 +1,7 @@
-# 1. execute any script.gd
+# 1. Execute any script
 
-1. execute extracted methods from `userscripts/*snippets.gd`
-2. execute any gdscript file by evaluating res://path::method_name
+1. Execute methods from `userscripts/*snippets.gd` ( extracted to **"Tools"** popup menu )
+2. Execute any gdscript file by evaluating `res://path::method_name` ( type it in the input box )
 
 When calling `method_name`, the following will be passed in:
 
@@ -9,11 +9,13 @@ When calling `method_name`, the following will be passed in:
 
 Therefore, the method in the script must have 0 to 3 parameters, and they must be defined in the correct order.
 
-# 2. eval
+# 2. Eval simple code
 
-Enter simple code in the edit box. When press the Run button, this plugin concatenates the text and executes the method. 
+Enter simple code in the edit box. When press the **"Run"** button, this plugin concatenates the text and executes the method. 
 
-It is called `eval`.  Also, three parameters are passed in to it : `e,x,d`  or `_et_`, `_ex_`, `_dat_` To prevent confusion.
+It is called `eval`.  
+
+Likewise, three parameters are passed into it : `e,x,d` ,  or `_et_`, `_ex_`, `_dat_` To prevent confusion.  
 
 
 ## Update Apr 9  2026
@@ -28,13 +30,13 @@ res://path/to/script.gd::method_name
 var ret = FU.run("=1+1")
 ```
 
-Actually I'm using this in ( modified version of ) [GDTerminal](https://github.com/ProgrammerOnCoffee/GDTerminal), which turns it into a sub-module of my plugin!
+Actually I'm using this in [GDTerminal](https://github.com/ProgrammerOnCoffee/GDTerminal) ( modified ) , which turns it into a sub-module of my plugin!
 
 <img width="438" height="232" alt="image" src="https://github.com/user-attachments/assets/135699dd-9d2f-46d4-97d7-f21296676d01" />
 
 <img width="441" height="375" alt="image" src="https://github.com/user-attachments/assets/89bf44c9-2d94-4553-880c-ca8fa65e7a4a" />
 
-
+- add new tool : shallow duplicate selected node
 
 ### Update Apr 7  2026
   
